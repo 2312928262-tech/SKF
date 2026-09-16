@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SKF · 修复工作台</title>
+  <link rel="icon" type="image/svg+xml" href="./brand/avatar.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 24px 32px;
+      background: #101118;
+      color: #F2F0EA;
+      font: 15px/1.6 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    header.top {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    h1 { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 600; margin-right: auto; }
+    h1 img { width: 30px; height: 30px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 8px;
+      background: #1E202C; border: 1px solid #787B98;
+      font-size: 12px; white-space: nowrap;
+    }
+    .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: #737382; }
+    .pill.ready .dot { background: #B8B5E4; }
+    .pill.error .dot { background: #E6AFBA; }
+    #budget-pill { cursor: default; color: #B6B5C2; }
+    #budget-pill b { color: #F2F0EA; font-weight: 500; }
+
+    .model-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+    .model-row label { font-size: 13px; color: #B6B5C2; }
+    select {
+      padding: 7px 10px; background: #171821; border: 1px solid #787B98;
+      border-radius: 8px; color: #F2F0EA; font: inherit; font-size: 13px;
+    }
+    select:disabled { opacity: 0.5; }
+    .model-hint { font-size: 12px; color: #D0B998; }
+    .model-current { font-size: 12px; color: #737382; font-family: 'JetBrains Mono', monospace; }
+
+    nav.tabs { display: flex; gap: 4px; border-bottom: 1px solid #2A2C3C; margin-bottom: 16px; }
+    nav.tabs button {
+      border: 0; background: transparent; color: #B6B5C2;
+      padding: 8px 16px; font: inherit; font-size: 14px; cursor: pointer;
+      border-bottom: 2px solid transparent; border-radius: 0;
+    }
+    nav.tabs button:hover:not(:disabled) { background: transparent; color: #F2F0EA; }
+    nav.tabs button.active { color: #F2F0EA; border-bottom-color: #B8B5E4; }
+    nav.tabs .tab-badge {
+      display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 6px;
+      background: #46436B; border-radius: 9px; font-size: 11px; text-align: center;
+    }
+
+    button {
+      padding: 9px 16px; border-radius: 8px; border: 1px solid #787B98;
+      background: transparent; color: #F2F0EA; font: inherit; font-size: 14px;
+      cursor: pointer; transition: background 160ms;
+    }
+    button:hover:not(:disabled) { background: #252735; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.primary { background: #46436B; border-color: #46436B; font-weight: 500; }
+    button.primary:hover:not(:disabled) { background: #303249; }
+    button.small { padding: 4px 10px; font-size: 12px; }
+    button.danger { border-color: #745533; color: #E6AFBA; }
+
+    textarea, input[type=text] {
+      width: 100%; padding: 10px 14px;
+      background: #171821; border: 1px solid #787B98; border-radius: 8px;
+      color: #F2F0EA; font: inherit; font-size: 14px; outline: 0;
+      transition: border-color 160ms;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    textarea:focus, input[type=text]:focus { border-color: #B8B5E4; outline: 2px solid #B8B5E4; outline-offset: 0; }
+    textarea:disabled, input[type=text]:disabled { opacity: 0.5; }
+
+    .controls { display: flex; gap: 10px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+    .hint { font-size: 12px; color: #737382; }
+
+    /* ── 对话 ── */
+    #chat-thread { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+    .msg { max-width: 88%; padding: 10px 14px; border-radius: 12px; overflow-wrap: anywhere; }
+    .msg.user { align-self: flex-end; background: #2B2D40; white-space: pre-wrap; }
+    .msg.bot { align-self: flex-start; background: #171821; border: 1px solid #F2F0EA1F; }
+    .msg .who { font-size: 11px; color: #737382; margin-bottom: 4px; }
+    .msg .body { font-size: 14px; }
+    .msg .body p { margin: 0 0 8px; }
+    .msg .body p:last-child { margin-bottom: 0; }
+    .msg .body pre { background: #101118; border: 1px solid #2A2C3C; border-radius: 8px; padding: 10px 12px; overflow-x: auto; margin: 8px 0; }
+    .msg .body pre code { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+    .msg .body code { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; background: #101118; padding: 1px 5px; border-radius: 4px; }
+    .msg .body pre code { background: transparent; padding: 0; }
+    .msg .body a { color: #B8B5E4; }
+    .msg .body ul, .msg .body ol { margin: 4px 0 8px 22px; }
+    .msg .body h3, .msg .body h4, .msg .body h5 { margin: 10px 0 6px; font-size: 15px; }
+    .msg.meta-line { background: transparent; border: 0; padding: 0 4px; font-size: 11px; color: #737382; font-family: 'JetBrains Mono', monospace; }
+    .msg.waiting { color: #B6B5C2; font-style: normal; }
+    #chat-empty { color: #737382; font-size: 13px; padding: 24px 0; text-align: center; }
+
+    /* ── 任务卡 ── */
+    details.panel { background: #171821; border: 1px solid #2A2C3C; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; }
+    details.panel summary { cursor: pointer; font-size: 14px; color: #B8B5E4; }
+    details.panel .form-grid { display: grid; gap: 10px; margin-top: 12px; }
+    .task-card { background: #171821; border: 1px solid #2A2C3C; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+    .task-card .head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+    .task-card .goal { font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+    .task-card .sub { font-size: 12px; color: #737382; font-family: 'JetBrains Mono', monospace; }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 9px; font-size: 11px; border: 1px solid #787B98; color: #B6B5C2; white-space: nowrap; }
+    .badge.st-running, .badge.st-waiting_provider { border-color: #46436B; color: #B8B5E4; }
+    .badge.st-succeeded { border-color: #3E5C46; color: #A9D1B2; }
+    .badge.st-failed { border-color: #745533; color: #E6AFBA; }
+    .badge.st-cancelled, .badge.st-interrupted { border-color: #5C5A33; color: #D0B998; }
+    .badge.st-waiting_approval { border-color: #745533; color: #E6C9A8; }
+    .badge.warn { border-color: #745533; color: #D0B998; }
+    .step-line { margin-top: 8px; font-size: 13px; color: #B6B5C2; }
+    .task-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .task-detail { margin-top: 12px; border-top: 1px solid #2A2C3C; padding-top: 12px; display: grid; gap: 12px; }
+    .detail-block h4 { font-size: 12px; color: #737382; font-weight: 500; margin-bottom: 6px; }
+    .artifact { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 8px 10px; background: #101118; border: 1px solid #2A2C3C; border-radius: 8px; margin-bottom: 6px; }
+    .artifact .path { font-family: 'JetBrains Mono', monospace; font-size: 12px; overflow-wrap: anywhere; }
+    .artifact .hash { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #737382; }
+    .timeline { max-height: 220px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #8B8A99; display: grid; gap: 3px; }
+    .timeline .t-line { overflow-wrap: anywhere; }
+    .timeline .t-time { color: #5B5A6B; }
+    .error-box { background: rgba(224,175,152,0.08); border: 1px solid #745533; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #E6C9A8; }
+    .error-box .next { color: #D0B998; margin-top: 4px; font-size: 12.5px; }
+    .approval-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 8px 10px; background: #101118; border: 1px solid #745533; border-radius: 8px; margin-bottom: 6px; font-size: 13px; }
+    .check-line { display: flex; gap: 8px; align-items: center; font-size: 13px; color: #D0B998; }
+    .check-line input { accent-color: #B8B5E4; }
+
+    /* ── 记忆 ── */
+    .mem-header { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+    .mem-stat { background: #171821; border: 1px solid #2A2C3C; border-radius: 10px; padding: 8px 14px; font-size: 12.5px; color: #B6B5C2; }
+    .mem-stat b { color: #F2F0EA; font-weight: 500; }
+    .mem-hit { background: #171821; border: 1px solid #2A2C3C; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; }
+    .mem-hit .text { font-size: 13.5px; overflow-wrap: anywhere; white-space: pre-wrap; }
+    .mem-hit .badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+    .mem-hit .src { font-size: 11.5px; color: #737382; font-family: 'JetBrains Mono', monospace; }
+    .mem-hit.archived { opacity: 0.62; }
+    .mem-detail { margin-top: 8px; border-top: 1px solid #2A2C3C; padding-top: 8px; display: grid; gap: 8px; }
+    details.diag { font-size: 12px; color: #737382; margin-top: 6px; }
+    details.diag summary { cursor: pointer; }
+    details.diag pre { background: #101118; border: 1px solid #2A2C3C; border-radius: 8px; padding: 8px 10px; overflow-x: auto; font-size: 11px; margin-top: 6px; }
+
+    .empty-block { color: #737382; font-size: 13px; padding: 18px 0; text-align: center; }
+    .warn-banner { padding: 10px 14px; background: rgba(224,175,152,0.1); border: 1px solid #745533; border-radius: 8px; color: #D0B998; font-size: 12px; margin-bottom: 14px; }
+
+    @media (max-width: 700px) {
+      body { padding: 14px 12px 24px; }
+      .msg { max-width: 100%; }
+      header.top { gap: 8px; }
+    }
+  </style>
+  <script src="./markdown.js" defer></script>
+  <script src="./ipc.js" defer></script>
+  <script src="./chat.js" defer></script>
+  <script src="./tasks.js" defer></script>
+  <script src="./memory.js" defer></script>
+  <script src="./e2e-probe.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <h1><img src="./brand/avatar.svg" alt="">SKF · 修复工作台</h1>
+    <span id="budget-pill" class="pill" title="">预算读取中…</span>
+    <span id="status" class="pill"><span class="dot"></span><span id="status-text">检查 IPC…</span></span>
+  </header>
+
+  <div class="model-row">
+    <label for="model-select">大脑：</label>
+    <select id="model-select">
+      <option value="kimi">Kimi K3（主模型 · 国内直连）</option>
+      <option value="deepseek">DeepSeek V4 Pro（副模型 · 国内直连）</option>
+      <option value="astra">GPT-6 Astra（副模型 · 需挂代理）</option>
+    </select>
+    <span id="model-current" class="model-current"></span>
+    <span id="model-hint" class="model-hint" hidden></span>
+  </div>
+
+  <div id="bridge-warn" class="warn-banner" hidden>
+    当前是浏览器预览模式：桌面桥（Tauri）不可用，只读界面样式。请从 SKF 桌面应用打开完整功能。
+  </div>
+
+  <nav class="tabs">
+    <button id="tab-chat" class="active" type="button">对话</button>
+    <button id="tab-tasks" type="button">任务<span id="tab-tasks-badge" class="tab-badge" hidden>0</span></button>
+    <button id="tab-memory" type="button">记忆</button>
+  </nav>
+
+  <main>
+    <section id="view-chat">
+      <div id="chat-thread"><div id="chat-empty">对话会在此显示。Enter 发送，Shift+Enter 换行。</div></div>
+      <form id="chat-form">
+        <textarea id="message" maxlength="16000" placeholder="输入消息（最多 16000 字）。Shift+Enter 换行，Enter 发送。" required></textarea>
+        <div class="controls">
+          <button id="send" type="submit" class="primary" disabled>发送</button>
+          <button id="check" type="button">检查连接</button>
+          <button id="clear" type="button" title="仅清空当前显示，不删除已保存的对话">清空显示</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="view-tasks" hidden>
+      <details class="panel" id="task-new">
+        <summary>新建文件任务（在SKF的工作目录里创建/修改文件）</summary>
+        <div class="form-grid">
+          <textarea id="task-goal" maxlength="4000" placeholder="要做什么？例如：在这个目录里创建一份报价说明 Markdown。"></textarea>
+          <input type="text" id="task-workspace" maxlength="1000" placeholder="工作目录绝对路径（例如 D:\SKF-Work\demo）。任务只能读写这个目录。">
+          <div class="controls">
+            <button id="task-start" type="button" class="primary">开始任务</button>
+            <span class="hint">任务使用当前大脑的模型快照；开始后在途任务不受模型切换影响。</span>
+          </div>
+        </div>
+      </details>
+      <div id="task-list"><div class="empty-block">还没有任务。上面新建一个，或从对话里了解能做什么。</div></div>
+    </section>
+
+    <section id="view-memory" hidden>
+      <div class="mem-header" id="mem-header"><span class="mem-stat">读取中…</span></div>
+      <form id="mem-search-form" class="controls" style="margin-bottom:14px;">
+        <input type="text" id="mem-query" maxlength="1000" placeholder="在当前项目记忆里搜索（关键词）" style="flex:1;min-width:200px;">
+        <button id="mem-search" type="submit" class="primary">搜索</button>
+        <label class="hint" style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="mem-include-archived"> 包含已归档</label>
+      </form>
+      <div id="mem-results"><div class="empty-block">输入关键词搜索；搜索结果是带信任级别与来源的记录。</div></div>
+    </section>
+  </main>
+</body>
+</html>

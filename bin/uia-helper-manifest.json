@@ -1,0 +1,13 @@
+{
+  "source": "scripts/uia-helper/UiaHelper.cs",
+  "sourceSha256": "41ffddfedaba49071e27c8d643098e28b302ab8771dbbf0a245d69cca9c88d60",
+  "output": "bin/UiaHelper.exe",
+  "outputSha256": "8e5875ccf4be61ece9b248b7d287127cd94f8d3815cde3b74c0cc421c284207a",
+  "compiler": "C:\\windows\\Microsoft.NET\\Framework64\\v4.0.30319\\csc.exe",
+  "references": [
+    "/r:C:\\windows\\Microsoft.NET\\assembly\\GAC_MSIL\\UIAutomationClient\\v4.0_4.0.0.0__31bf3856ad364e35\\UIAutomationClient.dll",
+    "/r:C:\\windows\\Microsoft.NET\\assembly\\GAC_MSIL\\UIAutomationTypes\\v4.0_4.0.0.0__31bf3856ad364e35\\UIAutomationTypes.dll",
+    "/r:C:\\windows\\Microsoft.NET\\assembly\\GAC_MSIL\\WindowsBase\\v4.0_4.0.0.0__31bf3856ad364e35\\WindowsBase.dll"
+  ],
+  "builtAt": "2026-09-15T20:53:07.660Z"
+}

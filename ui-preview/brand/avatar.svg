@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="512" height="512" viewBox="0 0 64 64"
+     class="xiaoliu"
+     role="img" aria-labelledby="xl-title xl-desc">
+  <title id="xl-title">小六 · Sixfold</title>
+  <desc id="xl-desc">
+    开口的靛蓝六边形环，环内是一枚暖灰白菱形核心。
+  </desc>
+
+  <style>
+    .xl-shell,
+    .xl-core {
+      transform-box: view-box;
+      transform-origin: 32px 32px;
+    }
+
+    .is-animated .xl-core {
+      animation: xl-pulse 4s ease-in-out infinite;
+    }
+
+    .is-animated .xl-shell {
+      animation: xl-breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes xl-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      25%      { transform: scale(1.06); opacity: 1; }
+      50%      { transform: scale(1); opacity: .88; }
+      75%      { transform: scale(1); opacity: .96; }
+    }
+
+    @keyframes xl-breathe {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: .86; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .is-animated .xl-core,
+      .is-animated .xl-shell {
+        animation: none;
+      }
+    }
+  </style>
+
+  <!-- 六边形外环：右上方留一个结构性开口，不画成加载圈。 -->
+  <path class="xl-shell"
+        d="M32 8 L11.2 20 L11.2 44 L32 56
+           L52.8 44 L52.8 26"
+        fill="none"
+        stroke="#9692C4"
+        stroke-width="6"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- 深靛蓝底托确保核心置于浅色背景时仍然可辨。 -->
+  <g class="xl-core">
+    <path d="M32 19 L45 32 L32 45 L19 32 Z"
+          fill="#35324F"/>
+    <path d="M32 25 L39 32 L32 39 L25 32 Z"
+          fill="#F2F0EA"/>
+  </g>
+</svg>

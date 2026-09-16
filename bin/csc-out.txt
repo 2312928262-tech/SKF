@@ -1,0 +1,2 @@
+d:\SKF-Work\dev\scripts\job-launcher\JobLauncher.cs(16,23): error CS0102: 类型“JobLauncher”已经包含“JobObjectExtendedLimitInformation”的定义
+d:\SKF-Work\dev\scripts\job-launcher\JobLauncher.cs(63,20): (与前一个错误相关的符号位置)

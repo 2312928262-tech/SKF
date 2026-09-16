@@ -1,0 +1,8 @@
+{
+  "source": "scripts/job-launcher/JobLauncher.cs",
+  "sourceSha256": "adce43595a3c8bfd705d579db5049294605cf89211ec3da6647069a2acb78953",
+  "output": "bin/JobLauncher.exe",
+  "outputSha256": "ae2c25afdc71c29faaba161f43f8a360fb5a37b698624497aa97ea14e773cf57",
+  "compiler": "C:\\windows\\Microsoft.NET\\Framework64\\v4.0.30319\\csc.exe",
+  "builtAt": "2026-09-11T23:55:33.208Z"
+}

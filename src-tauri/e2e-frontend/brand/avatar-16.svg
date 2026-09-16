@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="16" height="16" viewBox="0 0 16 16"
+     role="img" aria-label="小六">
+  <path d="M8 2 L3 5 L3 11 L8 14 L13 11 L13 6.5"
+        fill="none" stroke="#9692C4" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 6 L10 8 L8 10 L6 8 Z" fill="#9692C4"/>
+</svg>

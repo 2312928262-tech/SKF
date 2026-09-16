@@ -1,0 +1,17 @@
+{
+  "steps": [
+    {
+      "toolCalls": [
+        { "id": "call-write-1", "name": "file.write", "arguments": { "path": "report.md", "content": "# 报价说明\n\n测试内容" } }
+      ],
+      "finishReason": "tool_calls",
+      "usage": { "inputTokens": 120, "outputTokens": 30, "cachedInputTokens": null }
+    },
+    {
+      "expectToolResults": ["call-write-1"],
+      "text": "文件已经写好并通过校验。",
+      "finishReason": "stop",
+      "usage": { "inputTokens": 200, "outputTokens": 18, "cachedInputTokens": 50 }
+    }
+  ]
+}

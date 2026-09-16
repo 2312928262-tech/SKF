@@ -1,0 +1,37 @@
+# 依赖与构建产物
+node_modules/
+dist/
+target/
+*.log
+
+# 个人数据 / 密钥（绝不入库）
+.env
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+config.env
+
+# 开发产物（施工过程草稿，非开源内容）
+evidence/
+.work/
+agents/
+runtime-candidate/
+release/
+designs/
+temp/
+dev/
+*.answer.txt
+
+# 施工脚本草稿（个人开发辅助，非 SKF 本体）
+astra-*.md
+astra-*.mjs
+handoff-*.mjs
+handoff-*.md
+fix-*.mjs
+*.backup*
+
+# 个人人设（开源用 templates/prompts/ 模板替代）
+# 发布前：把 templates/prompts/* 覆盖到 prompts/，并确认下面不含个人身份
+# prompts/IDENTITY.md
+# prompts/MEMORY.md
+# prompts/TOOLS.md

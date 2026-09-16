@@ -1,0 +1,4 @@
+# M10 e2e 临时文件：强制 --cfg dev（复刻 tauri dev 的 devUrl 行为）。
+# ⚠️ e2e 完成后必须删除——留着会让后续构建一直走 devUrl。
+[build]
+rustflags = ["--cfg", "dev"]

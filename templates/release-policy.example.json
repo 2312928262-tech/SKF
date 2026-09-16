@@ -1,0 +1,27 @@
+{
+  "status": "BLOCKED_NOT_A_RELEASE",
+  "releaseVersion": "0.4.4",
+  "publicBaseUrl": null,
+  "projectSignerThumbprint": null,
+  "npmScopeOwnedByProject": null,
+  "npmProvenanceVerified": false,
+  "validatedPlatform": "windows-x64-local-fixtures-only",
+  "validatedNodeVersion": "24.20.0",
+  "managementProtocol": 1,
+  "configSchema": 1,
+  "releaseFilesRequired": [
+    "Authenticode-signed install.ps1 with reviewed pinned policy",
+    "Authenticode-signed release-manifest.psd1 with Schema,Version,Architecture,NodeVersion,NodeSignerThumbprint,Archive,ArchiveSha256,CatalogSha256,Files",
+    "Authenticode-signed release.cat matching the payload tree",
+    "skf-0.4.4-win-x64.zip containing runtime/node.exe and app/dist/cli.js plus all production runtime resources"
+  ],
+  "manifestFilesEntryShape": {"Path": "relative/allowlisted/file", "Sha256": "64 hex characters; computed from a real file, never a placeholder in release"},
+  "requiredBeforePublicRelease": [
+    "Owner-authorized scope and official HTTPS domain",
+    "Publisher signing authority; actual Authenticode and catalogue validation",
+    "Node distributor signature and binary hash verification",
+    "License/provenance audit for every vendor and production dependency",
+    "Clean standard-user install, upgrade/rollback and uninstall preserving data",
+    "Actual Tauri GUI and supported architecture acceptance"
+  ]
+}

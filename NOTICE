@@ -1,0 +1,7 @@
+SKF project code: MIT, see LICENSE.
+
+npm package status: the unscoped name "skf" was already occupied at verification time, so the release candidate package name is "skf-agent". This repository state prepares public package metadata only; it is not proof that the name is available, reserved, or published. Publication still requires the owner-controlled npm account, the tag release workflow with provenance/OIDC, an official HTTPS release domain for the signed Windows installer, and signing/provenance credentials.
+
+Vendored memory-runtime resources originate from the locally maintained memory v2 runtime. Their redistribution authorization and license attribution must be resolved by the project owner before public release; SKF's MIT declaration does not relicense these resources or third-party models. No model weights are bundled.
+
+Dependency license metadata is recorded in SBOM.json. Metadata is not a legal license audit. Browser binaries, local model servers, CUDA, unsigned Windows helpers, Tauri installers and build toolchains are excluded from the npm tarball. There is no install/postinstall download script.
